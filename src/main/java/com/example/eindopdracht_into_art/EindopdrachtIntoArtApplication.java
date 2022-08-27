@@ -8,6 +8,16 @@ public class EindopdrachtIntoArtApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EindopdrachtIntoArtApplication.class, args);
+
+//        var account = AccountFactory.create(AccountType.USER);
+//        var c1 = UserFactory.assign()
+
     }
+
+//    Business businessAccount = new BusinessAccountFactory();
+//    Account businessUser = businessAccount.requestUserAccount();
+//
+//    Business privateAccount = new ConsumerAccount();
+//    Account privateUser = privateAccount.requestUserAccount();
 
 }

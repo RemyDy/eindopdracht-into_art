@@ -11,7 +11,7 @@ public class HelloController {
     @GetMapping
     public ResponseEntity<String> hello(@RequestParam(defaultValue = "World!") String name) {
 
-        return ResponseEntity.ok().body("Hello %s".formatted(name));
+        return ResponseEntity.ok().body("Hello %s!".formatted(name));
 
     }
 
