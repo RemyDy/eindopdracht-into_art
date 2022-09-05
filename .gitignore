@@ -34,3 +34,6 @@ build/
 
 ### external properties ###
 private.properties
+
+### SQL ###
+data.sql

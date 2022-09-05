@@ -1,4 +1,4 @@
-package com.example.eindopdracht_into_art.controllers;
+package com.example.eindopdracht_into_art.controller.controllers;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class HelloControllerTest {
     @DisplayName("Should return string: Hello Teacher")
     void test_hello_param() throws Exception {
         this.mockMvc
-                .perform(get("/").queryParam("name", "Teacher"))
+                .perform(get("hello").queryParam("name", "Teacher"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello Teacher")))
                 .andDo(print());
@@ -42,9 +42,8 @@ public class HelloControllerTest {
     @DisplayName("Should return statuscode: 404")
     void test_wrong_endpoint() throws Exception {
         this.mockMvc
-                .perform(get("/hello"))
+                .perform(get("/"))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
-
 }
