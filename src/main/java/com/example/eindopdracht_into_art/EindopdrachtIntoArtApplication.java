@@ -9,5 +9,4 @@ public class EindopdrachtIntoArtApplication {
     public static void main(String[] args) {
         SpringApplication.run(EindopdrachtIntoArtApplication.class, args);
     }
-
 }
