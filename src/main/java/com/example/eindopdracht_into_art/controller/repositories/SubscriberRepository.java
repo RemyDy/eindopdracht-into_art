@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
+
     Optional<Subscriber> findSubscriberByEmail(String email);
 
     Optional<Subscriber> findSubscriberByConfirmationToken(String token);

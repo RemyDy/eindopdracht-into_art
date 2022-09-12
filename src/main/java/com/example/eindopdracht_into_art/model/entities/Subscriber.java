@@ -22,7 +22,7 @@ public class Subscriber {
     @Column(nullable = false)
     private LocalDateTime tokenExpiredAt;
 
-    private LocalDateTime tokenConfirmedAt;
+    private LocalDateTime tokenConfirmedAt = null;
 
     private String name;
 
@@ -30,17 +30,20 @@ public class Subscriber {
     } // JPA vereist een public of protected no-args constructor
 
     Subscriber(Builder builder) {
-    this.email = builder.email;
-    this.confirmationToken = builder.confirmationToken;
-    this.tokenCreatedAt = builder.tokenCreatedAt;
-    this.tokenExpiredAt = builder.tokenExpiredAt;
-    this.tokenConfirmedAt = builder.tokenConfirmedAt;
-    this.name = builder.name;
+        this.id = builder.id;
+        this.email = builder.email;
+        this.confirmationToken = builder.confirmationToken;
+        this.tokenCreatedAt = builder.tokenCreatedAt;
+        this.tokenExpiredAt = builder.tokenExpiredAt;
+        this.tokenConfirmedAt = builder.tokenConfirmedAt;
+        this.name = builder.name;
     }
 
     //region Getters
 
-    public Long getId(){return id;}
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -54,12 +57,12 @@ public class Subscriber {
         return confirmationToken;
     }
 
-    public LocalDateTime getTokenCreatedAt() {
-        return tokenCreatedAt;
-    }
-
     public LocalDateTime getTokenExpiredAt() {
         return tokenExpiredAt;
+    }
+
+    public LocalDateTime getTokenCreatedAt() {
+        return tokenCreatedAt;
     }
 
     public LocalDateTime getTokenConfirmedAt() {
@@ -68,10 +71,15 @@ public class Subscriber {
 
     //endregion
 
+    //region Setter
+    public void setTokenConfirmedAt(LocalDateTime tokenConfirmedAt) {
+        this.tokenConfirmedAt = tokenConfirmedAt;
+    }
+    //endregion
 
     //region Builder
-
     public static class Builder {
+        private Long id;
         private final String email;
         private final String confirmationToken;
         private final LocalDateTime tokenCreatedAt;
@@ -91,8 +99,8 @@ public class Subscriber {
             this.tokenExpiredAt = tokenExpiredAt;
         }
 
-        public Builder tokenConfirmedAt(LocalDateTime tokenConfirmedAt) {
-            this.tokenConfirmedAt = tokenConfirmedAt;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 

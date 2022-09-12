@@ -6,13 +6,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-public class SubscriberDtoInput {
+public class SubscriberInputDto {
 
     @Length(min = 2, max = 64,
             message = "Invoer naam is ongeldig, minimaal 2 en maximaal 64 karakters invullen.")
-    private String name;
+    private String name = "abonnee";
 
-    @NotBlank
+    @NotBlank(message = "E-mail is verplicht, veld mag niet leeg zijn")
     @Email(message = "Invoer e-mail is ongeldig")
     private String email;
 

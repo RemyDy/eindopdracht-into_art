@@ -12,7 +12,6 @@ public class SubscriberDto {
     private LocalDateTime tokenConfirmedAt;
 
     //region Getters
-
     public Long getId() {
         return id;
     }
@@ -44,7 +43,6 @@ public class SubscriberDto {
     //endregion
 
     //region Setters
-
     public void setId(Long id) {
         this.id = id;
     }
