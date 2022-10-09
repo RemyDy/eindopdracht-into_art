@@ -16,6 +16,9 @@ public class SubscriberInputDto {
     @Email(message = "Invoer e-mail is ongeldig")
     private String email;
 
+    @NotBlank
+    private String newsletter;
+
     private String confirmationToken;
 
     private LocalDateTime tokenCreatedAt;
@@ -50,6 +53,10 @@ public class SubscriberInputDto {
         return tokenConfirmedAt;
     }
 
+    public String getNewsletter() {
+        return newsletter;
+    }
+
     //endregion
 
     //region Setters
@@ -76,6 +83,10 @@ public class SubscriberInputDto {
 
     public void setTokenConfirmedAt(LocalDateTime tokenConfirmedAt) {
         this.tokenConfirmedAt = tokenConfirmedAt;
+    }
+
+    public void setNewsletter(String newsletter) {
+        this.newsletter = newsletter;
     }
 
     //endregion

@@ -6,10 +6,9 @@ import com.eindopdracht_into_art.models.dtos.SubscriberInputDto;
 
 public interface SubscriberService {
 
-    SubscriberDto createSubscriber(SubscriberInputDto dto);
+    SubscriberDto subscribeToNewsLetter(SubscriberInputDto dto);
 
-    SubscriberDto confirmSubscription(Long id, SubscriberInputDto dto);
+    SubscriberDto confirmEmail(Long id, SubscriberInputDto dto);
 
     void deleteSubscriberByEmail(SubscriberInputDto dto);
-
 }

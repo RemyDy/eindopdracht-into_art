@@ -1,6 +1,6 @@
 package com.eindopdracht_into_art.models.wrappers;
 
-import com.eindopdracht_into_art.models.entities.User;
+import com.eindopdracht_into_art.models.entities.UserAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,25 +9,25 @@ import java.util.Collection;
 
 public class UserDetailsWrapper implements UserDetails {
 
-    private final User user;
+    private final UserAccount userAccount;
 
-    public UserDetailsWrapper(User user)  {
-        this.user = user;
+    public UserDetailsWrapper(UserAccount userAccount)  {
+        this.userAccount = userAccount;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userAccount.getUsername();
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return userAccount.getPassword();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities()
+        return userAccount.getAuthorities()
                 .stream()
                 .map(AuthorityWrapper::new)
                 .toList();
@@ -40,7 +40,7 @@ public class UserDetailsWrapper implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.isLocked();
+        return !userAccount.isLocked();
     }
 
     @Override
@@ -50,6 +50,6 @@ public class UserDetailsWrapper implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+        return userAccount.isEnabled();
     }
 }

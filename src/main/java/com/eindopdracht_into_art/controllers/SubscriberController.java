@@ -12,18 +12,18 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 import static com.eindopdracht_into_art.config.security.SecurityConstants.EXPIRE_MIN_15;
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.EP_NEWSLETTER;
-import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrorsIfAny;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_NEWSLETTER;
+import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrors;
 
 
 @RestController
 @RequestMapping(EP_NEWSLETTER)
 public class SubscriberController {
 
-    private final SubscriberService service;
+    private final SubscriberService subscriberService;
 
-    public SubscriberController(SubscriberService service) {
-        this.service = service;
+    public SubscriberController(SubscriberService subscriberService) {
+        this.subscriberService = subscriberService;
     }
 
 
@@ -32,10 +32,11 @@ public class SubscriberController {
             @Valid @RequestBody SubscriberInputDto dto, BindingResult br
     ) {
         if (br.hasErrors()) {
-            return validateAndReturnErrorsIfAny(br);
+            return validateAndReturnErrors(br);
         }
         generateTokenAndSetToDto(dto);
-        SubscriberResponse record = new SubscriberResponse(service.createSubscriber(dto));
+        SubscriberResponse record = new SubscriberResponse(subscriberService.subscribeToNewsLetter(dto));
+//        subscriberService.addSubscription(record.subscriber().getId(), record.subscriber().getNewsletter());
 
         return ResponseEntity.created(record.getLocation()).body(record.getConfirmTokenMessage());
     }
@@ -46,7 +47,7 @@ public class SubscriberController {
             @PathVariable() String confirmationToken
     ) {
         final var dto = setConfirmedTokenToDto(confirmationToken);
-        SubscriberResponse record = new SubscriberResponse(service.confirmSubscription(id, dto));
+        SubscriberResponse record = new SubscriberResponse(subscriberService.confirmEmail(id, dto));
 
         return ResponseEntity.ok().body(record.getSubscriberConfirmedMessage());
     }
@@ -56,9 +57,9 @@ public class SubscriberController {
             @Valid @RequestBody SubscriberInputDto dto, BindingResult br
     ) {
         if (br.hasErrors()) {
-            validateAndReturnErrorsIfAny(br);
+            validateAndReturnErrors(br);
         }
-        service.deleteSubscriberByEmail(dto);
+        subscriberService.deleteSubscriberByEmail(dto);
 
         return ResponseEntity.noContent().build();
     }

@@ -12,16 +12,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 import static com.eindopdracht_into_art.config.security.SecurityConstants.PREFIX_BEARER;
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.*;
-import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrorsIfAny;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_AUTHENTICATED;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_LOGIN;
+import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrors;
 
 @RestController
 public class AuthenticationController {
@@ -40,7 +38,7 @@ public class AuthenticationController {
             @Valid @RequestBody AuthRequestDto dto, BindingResult br
     ) {
         if (br.hasErrors()) {
-            return validateAndReturnErrorsIfAny(br);
+            return validateAndReturnErrors(br);
         }
         final var u = dto.getUsername();
         final var p = dto.getPassword();
@@ -55,7 +53,7 @@ public class AuthenticationController {
 
         } catch (AuthenticationException ex) {
             throw new BadCredentialsException("Foutief gebruikersnaam of wachtwoord", ex);
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException("Onjuist gebruik van argumenten", ex);
         }
         return ResponseEntity.ok()
@@ -65,13 +63,12 @@ public class AuthenticationController {
     }
 
     @GetMapping(EP_AUTHENTICATED)
-    public ResponseEntity<String> helloUser(
-    ){
-        final var authenticated = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
+    public ResponseEntity<String> validateToken(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token
+    ) {
+        final var authenticated = SecurityContextHolder.getContext().getAuthentication();
 
-        return ResponseEntity.ok().body(authenticated.getPrincipal().toString());
+        System.out.println("token = " + token);
+        return ResponseEntity.ok().body("%s, jij bent een geautoriseerde user".formatted(authenticated.getName()));
     }
-
 }

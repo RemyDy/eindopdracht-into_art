@@ -4,7 +4,7 @@ import com.eindopdracht_into_art.models.dtos.SubscriberDto;
 
 import java.net.URI;
 
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.EP_NEWSLETTER;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_NEWSLETTER;
 import static com.eindopdracht_into_art.helpers.UriCreator.createUriById;
 
 public record SubscriberResponse(SubscriberDto subscriber) {

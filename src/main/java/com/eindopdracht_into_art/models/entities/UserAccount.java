@@ -6,35 +6,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
-public class User {
+public class UserAccount {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
-
     private String password;
-
     private String email;
-
     private boolean locked;
-    //
     private boolean enabled;
 
-    @ManyToMany(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
-    @JoinTable(
-            name = "users_authorities",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_account_authority"
+            , joinColumns = @JoinColumn(name = "user_account_id")
+            , inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Artist artist;
 
     public void addAuthorities(Authority authorities) {
         this.authorities.add(authorities);
@@ -68,6 +59,11 @@ public class User {
     public Set<Authority> getAuthorities() {
         return authorities;
     }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
     //endregion
 
     //region Setters
@@ -90,6 +86,7 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     //endregion
 
 }

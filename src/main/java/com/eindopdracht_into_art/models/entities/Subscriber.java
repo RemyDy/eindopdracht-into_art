@@ -2,6 +2,7 @@ package com.eindopdracht_into_art.models.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "subscriber")
@@ -12,6 +13,8 @@ public class Subscriber {
 
     @Column(nullable = false)
     private String email;
+
+    private String name;
 
     @Column(nullable = false)
     private String confirmationToken;
@@ -24,13 +27,13 @@ public class Subscriber {
 
     private LocalDateTime tokenConfirmedAt = null;
 
-    private String name;
+    @OneToMany(mappedBy = "subscriber")
+    Set<NewsletterSubscriber> newsletter;
 
     protected Subscriber() {
-    } // JPA vereist een public of protected no-args constructor
+    }
 
     Subscriber(Builder builder) {
-//        this.id = builder.id;
         this.email = builder.email;
         this.confirmationToken = builder.confirmationToken;
         this.tokenCreatedAt = builder.tokenCreatedAt;
@@ -66,6 +69,7 @@ public class Subscriber {
     public LocalDateTime getTokenConfirmedAt() {
         return tokenConfirmedAt;
     }
+
     //endregion
 
     //region Setter
@@ -74,9 +78,7 @@ public class Subscriber {
     }
     //endregion
 
-    //region Builder
     public static class Builder {
-//        private Long id;
         private final String email;
         private final String confirmationToken;
         private final LocalDateTime tokenCreatedAt;
@@ -104,7 +106,6 @@ public class Subscriber {
             return new Subscriber(this);
         }
     }
-    //endregion
 }
 
 

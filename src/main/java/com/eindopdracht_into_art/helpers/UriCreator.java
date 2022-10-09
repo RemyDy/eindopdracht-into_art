@@ -2,8 +2,8 @@ package com.eindopdracht_into_art.helpers;
 
 import java.net.URI;
 
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.BASE_URL_V1;
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.LOCALHOST8080;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.BASE_URL_V1;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.LOCALHOST8080;
 
 public class UriCreator {
 

@@ -17,34 +17,35 @@ import java.time.LocalDateTime;
 public class SubscriberServiceImpl implements SubscriberService {
     // TODO: Na school project zoek uit hoe een mail service opgezet kan worden
 
-    private final SubscriberRepository repository;
+    private final SubscriberRepository subscriberRepository;
 
-    public SubscriberServiceImpl(SubscriberRepository repository) {
-        this.repository = repository;
+    public SubscriberServiceImpl(SubscriberRepository subscriberRepository) {
+        this.subscriberRepository = subscriberRepository;
     }
 
     @Override
-    public SubscriberDto createSubscriber(SubscriberInputDto dto) {
+    public SubscriberDto subscribeToNewsLetter(SubscriberInputDto dto) {
         performChecksOnDtoBeforeSavingSubscriber(dto);
-        final var savedSubscriber = repository.save(relayToSubscriber(dto));
+        final var savedSubscriber = subscriberRepository.save(relayToSubscriber(dto));
         return relayToDto(savedSubscriber);
     }
 
     @Override
-    public SubscriberDto confirmSubscription(Long id, SubscriberInputDto dto) {
-        repository.findById(id).orElseThrow(RecordNotFoundException::new);
+    public SubscriberDto confirmEmail(Long id, SubscriberInputDto dto) {
+        subscriberRepository.findById(id).orElseThrow(RecordNotFoundException::new);
 
         final var subscriber = performChecksOnDtoBeforeConfirmingSubscription(dto);
-        final var confirmedSubscriber = repository.save(subscriber);
+        final var confirmedSubscriber = subscriberRepository.save(subscriber);
         return relayToDto(confirmedSubscriber);
     }
 
     @Override
     public void deleteSubscriberByEmail(SubscriberInputDto dto) {
-        final var subscriber = repository.findSubscriberByEmail(dto.getEmail())
+        final var subscriber = subscriberRepository.findSubscriberByEmail(dto.getEmail())
                 .orElseThrow(RecordNotFoundException::new);
-        repository.delete(subscriber);
+        subscriberRepository.delete(subscriber);
     }
+
 
     //region private methods
     private SubscriberDto relayToDto(Subscriber subscriber) {
@@ -53,7 +54,6 @@ public class SubscriberServiceImpl implements SubscriberService {
         dto.setName(subscriber.getName());
         dto.setEmail(subscriber.getEmail());
         dto.setConfirmationToken(subscriber.getConfirmationToken());
-
         return dto;
     }
 
@@ -65,18 +65,17 @@ public class SubscriberServiceImpl implements SubscriberService {
                 dto.getTokenExpiredAt()
         );
         subscriber.name(dto.getName());
-
         return subscriber.build();
     }
 
     private void performChecksOnDtoBeforeSavingSubscriber(SubscriberInputDto dto) {
 
-        if (repository.findSubscriberByEmail(dto.getEmail()).isPresent()) {
+        if (subscriberRepository.findSubscriberByEmail(dto.getEmail()).isPresent()) {
             final var subscriber
-                    = repository.findSubscriberByEmail(dto.getEmail()).get();
+                    = subscriberRepository.findSubscriberByEmail(dto.getEmail()).get();
 
             if (subscriber.getTokenConfirmedAt() != null) {
-                throw new RecordExistsException("Dit mail adres is al ingeschreven voor de nieuwsbrief");
+                throw new RecordExistsException("Dit mail adres is al bevestigd.");
             }
             if (subscriber.getTokenConfirmedAt() == null
                 && LocalDateTime.now().isBefore(subscriber.getTokenExpiredAt())
@@ -90,7 +89,7 @@ public class SubscriberServiceImpl implements SubscriberService {
             }
             if (subscriber.getTokenConfirmedAt() == null
                 && LocalDateTime.now().isAfter(subscriber.getTokenExpiredAt())) {
-                repository.delete(subscriber);
+                subscriberRepository.delete(subscriber);
             }
         }
     }
@@ -98,7 +97,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     private Subscriber performChecksOnDtoBeforeConfirmingSubscription(SubscriberInputDto dto) {
 
         final var subscriber
-                = repository.findSubscriberByConfirmationToken(dto.getConfirmationToken())
+                = subscriberRepository.findSubscriberByConfirmationToken(dto.getConfirmationToken())
                 .orElseThrow(RecordNotFoundException::new);
 
         if (subscriber.getTokenConfirmedAt() != null) {

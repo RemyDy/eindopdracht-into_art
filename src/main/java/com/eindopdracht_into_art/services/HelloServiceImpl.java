@@ -10,4 +10,5 @@ public class HelloServiceImpl implements HelloService {
 
         return "Hello %s".formatted(name);
     }
+
 }

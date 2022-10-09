@@ -4,7 +4,7 @@ import com.eindopdracht_into_art.models.entities.Authority;
 
 import java.util.Set;
 
-public class UserDto {
+public class UserAccountDto {
 
     private Long id;
 

@@ -39,8 +39,6 @@ public class JwtService {
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    //region Private methods
-
     private String createToken(Map<String, Object> claims, String subject) {
 
         long currentTime = System.currentTimeMillis();
@@ -71,5 +69,5 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(TextCodec.BASE64.decode(KEY)).parseClaimsJws(token).getBody();
     }
-    //endregion
+
 }

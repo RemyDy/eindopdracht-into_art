@@ -1,4 +1,4 @@
-package com.eindopdracht_into_art.controllers.exceptions;
+package com.eindopdracht_into_art.controllers;
 
 import com.eindopdracht_into_art.models.exceptions.RecordExistsException;
 import com.eindopdracht_into_art.models.exceptions.RecordNotFoundException;
