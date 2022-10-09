@@ -3,6 +3,7 @@ package com.eindopdracht_into_art.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.*;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.*;
 
 
 @Configuration
@@ -55,11 +56,18 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .authorizeRequests(auth -> auth
                         .mvcMatchers(EP_NEWSLETTER + "*/**"
-                                , EP_REGISTRATION
                                 , EP_LOGIN + "**"
-                                , EP_HELLO).permitAll()
-                        .mvcMatchers(EP_USER).hasAuthority("USER")
-                        .mvcMatchers("/authenticated").authenticated()
+                                , EP_REGISTRATION
+                                , EP_HELLO
+                        ).permitAll()
+                        .mvcMatchers(
+                                EP_USER + "*/**"
+                        ).hasAuthority("USER")
+                        .mvcMatchers(
+                                HttpMethod.GET, EP_USER + "/profile" + "*/**"
+                        ).hasAuthority("User")
+                        .mvcMatchers("/authenticated"
+                        ).authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling()

@@ -10,6 +10,7 @@ public class SubscriberDto {
     private LocalDateTime tokenCreatedAt;
     private LocalDateTime tokenExpiredAt;
     private LocalDateTime tokenConfirmedAt;
+    private String newsletter;
 
     //region Getters
     public Long getId() {
@@ -38,6 +39,10 @@ public class SubscriberDto {
 
     public LocalDateTime getTokenConfirmedAt() {
         return tokenConfirmedAt;
+    }
+
+    public String getNewsletter() {
+        return newsletter;
     }
 
     //endregion
@@ -71,5 +76,8 @@ public class SubscriberDto {
         this.tokenConfirmedAt = tokenConfirmedAt;
     }
 
-    //endregion
+    public void setNewsletter(String newsletter) {
+        this.newsletter = newsletter;
+    }
+//endregion
 }

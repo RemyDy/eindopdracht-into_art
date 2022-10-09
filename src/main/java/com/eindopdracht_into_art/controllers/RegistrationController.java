@@ -2,9 +2,9 @@ package com.eindopdracht_into_art.controllers;
 
 import com.eindopdracht_into_art.helpers.UriCreator;
 import com.eindopdracht_into_art.models.dtos.RegistrationDto;
-import com.eindopdracht_into_art.models.entities.Authority;
+import com.eindopdracht_into_art.models.enums.Role;
 import com.eindopdracht_into_art.payload.RegistrationResponse;
-import com.eindopdracht_into_art.services.interfaces.UserService;
+import com.eindopdracht_into_art.services.interfaces.UserAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.EP_LOGIN;
-import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpointConstants.EP_REGISTRATION;
-import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrorsIfAny;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_LOGIN;
+import static com.eindopdracht_into_art.controllers.endpoints.ControllerEndpoint.EP_REGISTRATION;
+import static com.eindopdracht_into_art.helpers.Validator.validateAndReturnErrors;
 
 @RestController
 @RequestMapping(EP_REGISTRATION)
 public class RegistrationController {
 
-    UserService userService;
+    UserAccountService userAccountService;
 
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
+    public RegistrationController(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
     }
 
     @PostMapping()
@@ -33,10 +33,10 @@ public class RegistrationController {
             @Valid @RequestBody RegistrationDto dto, BindingResult br
     ) {
         if (br.hasErrors()) {
-            validateAndReturnErrorsIfAny(br);
+            validateAndReturnErrors(br);
         }
-        final var user = userService.registerUser(dto);
-        userService.addAuthority(user.getId(), Authority.Role.USER.toString());
+        final var user = userAccountService.registerUser(dto);
+        userAccountService.addAuthority(user.getId(), Role.USER.toString());
 
         final var location = UriCreator.createUriById(EP_LOGIN, user.getId());
         final var payload = new RegistrationResponse(user.getUsername()).getResponse();

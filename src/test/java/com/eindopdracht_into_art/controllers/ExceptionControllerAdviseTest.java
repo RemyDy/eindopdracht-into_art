@@ -1,6 +1,5 @@
 package com.eindopdracht_into_art.controllers;
 
-import com.eindopdracht_into_art.controllers.exceptions.ExceptionControllerAdvise;
 import com.eindopdracht_into_art.models.exceptions.PreConditionNotMetException;
 import com.eindopdracht_into_art.models.exceptions.RecordExistsException;
 import com.eindopdracht_into_art.models.exceptions.RecordNotFoundException;
@@ -77,7 +76,7 @@ class ExceptionControllerAdviseTest {
 
     @Test
     @DisplayName("Test should return ResponseEntity, status: 412")
-    void test_handlePreConditionNotMetException(){
+    void test_handlePreConditionNotMetException() {
         ExceptionControllerAdvise eca = new ExceptionControllerAdvise();
 
         final var expected
@@ -91,15 +90,19 @@ class ExceptionControllerAdviseTest {
 
     @Test
     @DisplayName("Test should return ResponseEntity, status: 400")
-    void test_handleIllegalArgumentExceptionException(){
+    void test_handleIllegalArgumentExceptionException() {
         ExceptionControllerAdvise eca = new ExceptionControllerAdvise();
 
         final var expected
-                = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+                = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("No need to catch illegalArgumentException, but if I did I would return a status 400");
 
         final var actual
-                = eca.handlePreConditionNotMetException(new IllegalArgumentException());
-
+                = eca.handleIllegalArgumentExceptionException(
+                new IllegalArgumentException(
+                        "No need to catch illegalArgumentException, but if I did I would return a status 400"
+                )
+        );
         assertEquals(expected, actual);
     }
 

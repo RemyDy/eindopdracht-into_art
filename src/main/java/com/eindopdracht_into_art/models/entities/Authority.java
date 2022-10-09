@@ -12,61 +12,29 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Long userId;
-
     private String authority;
 
-    @ManyToMany(mappedBy = "authorities")
-    private Set<User> users;
-
-    public Authority(Long userId, String authority) {
-        this.userId = userId;
+    public Authority(String authority) {
         this.authority = authority;
     }
 
-    protected Authority() { // JPA vereist een public of protected no-args constructor
+    @ManyToMany(mappedBy = "authorities")
+    private Set<UserAccount> userAccounts;
+
+    protected Authority() {
     }
 
     //region Getters
-
     public Long getId() {
         return id;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public String getAuthority() {
         return authority;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<UserAccount> getUserAccounts() {
+        return userAccounts;
     }
-
     //endregion
-
-    //region Setters
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public void setRole(String authority) {
-        this.authority = authority;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    //endregion
-
-    public enum Role {
-        USER,
-        ADMIN,
-        ARTIST
-    }
 }

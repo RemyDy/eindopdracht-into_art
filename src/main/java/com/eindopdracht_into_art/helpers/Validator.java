@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 import java.util.stream.Collectors;
 
 public final class Validator {
-    public static ResponseEntity<Object> validateAndReturnErrorsIfAny(BindingResult br) {
+    public static ResponseEntity<Object> validateAndReturnErrors(BindingResult br) {
         final var errors = br.getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)

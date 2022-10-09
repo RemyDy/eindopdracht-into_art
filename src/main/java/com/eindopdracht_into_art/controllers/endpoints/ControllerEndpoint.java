@@ -1,6 +1,6 @@
 package com.eindopdracht_into_art.controllers.endpoints;
 
-public class ControllerEndpointConstants {
+public class ControllerEndpoint {
 
     public static final String EP_HELLO  = "/hello";
     public static final String EP_NEWSLETTER  = "/newsletter";

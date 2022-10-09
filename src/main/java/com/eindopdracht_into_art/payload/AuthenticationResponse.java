@@ -9,6 +9,8 @@ public record AuthenticationResponse(String jwt) {
                                 
                 Let op: deze is voor een beperkte tijd geldig.
                 Is de token verlopen dient de gebruiker zich opnieuw in te loggen.
+                
+                @Teacher, let op gebruik de PUT method in Postman ;-)
                                 
                 %s""".formatted(jwt);
     }
